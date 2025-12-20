@@ -121,15 +121,22 @@ class AudioEngine: ObservableObject {
         AudioObjectAddPropertyListener(AudioObjectID(kAudioObjectSystemObject), &propertyAddress, hardwareListenerCallback, selfPointer)
     }
     
-    // MARK: - Playback Control
-    
     private let renderCallback: AudioDeviceIOProc = { (inDevice, inNow, inInputData, inInputTime, outOutputData, inOutputTime, inClientData) -> OSStatus in
-        let bufferList = UnsafeMutableAudioBufferListPointer(outOutputData)
-        for buffer in bufferList {
-            memset(buffer.mData, 0, Int(buffer.mDataByteSize))
+            
+            // 1. Wrap the raw pointer in the Swift buffer list wrapper
+            // This wrapper handles the iteration safely
+            let bufferList = UnsafeMutableAudioBufferListPointer(outOutputData)
+            
+            // 2. Iterate through buffers
+            for buffer in bufferList {
+                // 3. Check if the memory pointer (mData) is not null and size is > 0
+                if let dataPointer = buffer.mData, buffer.mDataByteSize > 0 {
+                    memset(dataPointer, 0, Int(buffer.mDataByteSize))
+                }
+            }
+            
+            return noErr
         }
-        return noErr
-    }
     
     func start() {
         guard let uid = selectedDeviceUID,
