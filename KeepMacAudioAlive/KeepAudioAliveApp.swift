@@ -198,43 +198,22 @@ struct ContentView: View {
     @EnvironmentObject var engine: AudioEngine
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) { // Aligns children to the left
-            // Top Label
-            Text("Selected Audio Output:")
-                .font(.headline)
-                .padding(.top, 0)
-            
-            // Controls Row
-            HStack(alignment: .center, spacing: 12) {
-                
-                // 1. Device Selector Dropdown
-                Picker("Device", selection: $engine.selectedDeviceUID) {
-                    ForEach(engine.devices) { device in
-                        Text(device.name).tag(device.uid as String?)
-                    }
-                }
-                .labelsHidden()
-                .frame(width: 200)
-                .disabled(engine.isRunning) // Disable changing device while running
-                
-                // 2. Start/Stop Button
-                Button(action: {
-                    if engine.isRunning {
-                        engine.stop()
-                    } else {
-                        engine.start()
-                    }
-                }) {
-                    Text(engine.isRunning ? "Stop" : "Start")
-                        .frame(width: 50) // Fixed width to prevent jumping
-                }
-                .disabled(engine.selectedDeviceUID == nil)
-                
-                // 3. Icon
-                Image(systemName: "waveform.circle.fill")
-                    .foregroundColor(engine.isRunning ? .green : .secondary)
-                    .font(.title2)
+        HStack {
+            Image(systemName: "waveform.circle.fill")
+                .foregroundColor(engine.isRunning ? .green : .secondary)
+                .font(.title2)
+            Button(action: {engine.isRunning ? engine.stop() : engine.start() } ) {
+                Text (engine.isRunning ? "Stop" : "Start")
+                    .frame (width: 50)
             }
+            Picker("Device", selection: $engine.selectedDeviceUID) {
+                ForEach(engine.devices) { device in
+                    Text (device.name).tag(device.uid as String?)
+                }
+            }
+            .labelsHidden()
+            .frame (width: 170)
+            .disabled(engine.isRunning)
         }
         .padding(16)
         .fixedSize()
