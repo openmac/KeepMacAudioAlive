@@ -8,7 +8,7 @@ Keep Mac audio alive to prevent delays or pops with some DACs.
 <img width="462" height="222" alt="Screenshot 2025-12-21 at 10 41 12 PM" src="https://github.com/user-attachments/assets/49883a00-e849-4b8d-9f3c-9f8d76719e13" />
 
 4. You can stop and change it to another device then click Start again.
-5. 
+
 You can set this app to start at startup too (thanks to JIW's contributions).
 
 
