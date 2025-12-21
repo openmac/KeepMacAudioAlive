@@ -2,9 +2,9 @@
 Keep Mac audio alive to prevent delays or pops with some DACs.
 
 ## How to use
-1. Download the app from releases.
+1. Download the app from [releases](https://github.com/openmac/KeepMacAudioAlive/releases).
 2. Allow the app to run via security settings on macOS settings, or build the app yourself using Xcode.
-3. Start the app, it starts sending silence to the selected devide.
+3. Start the app, it starts sending silence to the selected device:
 <img width="462" height="222" alt="Screenshot 2025-12-21 at 10 41 12 PM" src="https://github.com/user-attachments/assets/49883a00-e849-4b8d-9f3c-9f8d76719e13" />
 
 4. You can stop and change it to another device then click Start again.
