@@ -73,6 +73,8 @@ class AudioEngine: ObservableObject {
         
         self.devices = newDevices
         
+        start()
+        
         // Handle Disconnection Logic
         if isRunning, let currentID = currentDeviceID {
             // Check if our currently running device still exists in the new list
@@ -89,6 +91,9 @@ class AudioEngine: ObservableObject {
         } else if selectedDeviceUID == nil, let first = newDevices.first {
             selectedDeviceUID = first.uid
         }
+        
+        start()
+        
     }
     
     private func getDeviceStringProperty(id: AudioDeviceID, selector: AudioObjectPropertySelector) -> String {
@@ -226,7 +231,7 @@ struct ContentView: View {
                 .disabled(engine.isRunning || engine.selectedDeviceUID == nil)
                 
                 Button(action: { engine.stop() }) {
-                    Text("Stop")
+                    Text("Stop & Change")
                         .frame(maxWidth: .infinity)
                 }
                 .disabled(!engine.isRunning)
