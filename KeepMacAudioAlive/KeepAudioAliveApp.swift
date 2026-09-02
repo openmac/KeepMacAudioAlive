@@ -1,6 +1,8 @@
 import SwiftUI
+import AppKit
 import CoreAudio
 import AVFoundation
+import ServiceManagement
 internal import Combine
 
 // MARK: - CoreAudio Engine
@@ -8,24 +10,61 @@ class AudioEngine: ObservableObject {
     @Published var isRunning = false
     @Published var devices: [AudioDevice] = []
     @Published var selectedDeviceUID: String? // We store UID for persistence
+    @Published var launchAtLogin: Bool = SMAppService.mainApp.status == .enabled
     
     private var ioProcID: AudioDeviceIOProcID?
     private var currentDeviceID: AudioDeviceID?
-    
+
+    // Tracks whether the user wants audio kept alive, independent of whether it's
+    // actually running right now (e.g. a Bluetooth dongle like the Creative BT-W6
+    // can drop out and reconnect on its own). Only an explicit Stop clears this,
+    // so a disconnect/reconnect cycle resumes automatically without undoing a
+    // manual Stop.
+    private var userWantsRunning: Bool {
+        get { UserDefaults.standard.bool(forKey: "UserWantsRunning") }
+        set { UserDefaults.standard.set(newValue, forKey: "UserWantsRunning") }
+    }
+
     struct AudioDevice: Hashable, Identifiable {
         let id: AudioDeviceID
         let uid: String
         let name: String
     }
-    
+
     init() {
         // Load saved device UID from UserDefaults
         self.selectedDeviceUID = UserDefaults.standard.string(forKey: "LastSelectedDeviceUID")
-        
+
         refreshDevices()
         setupDeviceListener()
     }
-    
+
+    // MARK: - User-Facing Controls
+
+    func userStart() {
+        userWantsRunning = true
+        start()
+    }
+
+    func userStop() {
+        userWantsRunning = false
+        stop()
+    }
+
+    func setLaunchAtLogin(_ enabled: Bool) {
+        do {
+            if enabled {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+            launchAtLogin = SMAppService.mainApp.status == .enabled
+        } catch {
+            print("Failed to update launch-at-login: \(error)")
+            launchAtLogin = SMAppService.mainApp.status == .enabled
+        }
+    }
+
     // MARK: - Device Management
     
     func refreshDevices() {
@@ -72,9 +111,7 @@ class AudioEngine: ObservableObject {
                 }
         
         self.devices = newDevices
-        
-        start()
-        
+
         // Handle Disconnection Logic
         if isRunning, let currentID = currentDeviceID {
             // Check if our currently running device still exists in the new list
@@ -84,14 +121,20 @@ class AudioEngine: ObservableObject {
                 stop()
             }
         }
-        
-        // Auto-select if we have a saved UID and nothing is selected
-        if let savedUID = selectedDeviceUID, let match = newDevices.first(where: { $0.uid == savedUID }) {
-            // We found our saved device
-        } else if selectedDeviceUID == nil, let first = newDevices.first {
-            selectedDeviceUID = first.uid
+
+        // Auto-select a default only when nothing has ever been chosen. Don't
+        // overwrite an existing selection just because that device is
+        // momentarily missing from the list (e.g. a Bluetooth device mid-reconnect)
+        // — losing the selection here would prevent auto-resume once it comes back.
+        if selectedDeviceUID == nil {
+            selectedDeviceUID = newDevices.first?.uid
         }
-        
+
+        // Resume automatically if the user wants audio kept alive (e.g. the
+        // Bluetooth dongle just reconnected) but it isn't running yet.
+        if userWantsRunning && !isRunning {
+            start()
+        }
     }
     
     private func getDeviceStringProperty(id: AudioDeviceID, selector: AudioObjectPropertySelector) -> String {
@@ -196,27 +239,38 @@ func hardwareListenerCallback(objectID: AudioObjectID,
 struct ContentView: View {
     // We use EnvironmentObject so we share the same engine instance across window re-opens
     @EnvironmentObject var engine: AudioEngine
-    
+
     var body: some View {
-        HStack {
-            Image(systemName: "waveform.circle.fill")
-                .foregroundColor(engine.isRunning ? .green : .secondary)
-                .font(.title2)
-            Button(action: {engine.isRunning ? engine.stop() : engine.start() } ) {
-                Text (engine.isRunning ? "Stop" : "Start")
-                    .frame (width: 50)
-            }
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Keep Mac Audio Alive")
+                .font(.headline)
+
             Picker("Device", selection: $engine.selectedDeviceUID) {
                 ForEach(engine.devices) { device in
-                    Text (device.name).tag(device.uid as String?)
+                    Text(device.name).tag(device.uid as String?)
                 }
             }
             .labelsHidden()
-            .frame (width: 170)
             .disabled(engine.isRunning)
+
+            Button(action: { engine.isRunning ? engine.userStop() : engine.userStart() }) {
+                Text(engine.isRunning ? "Stop" : "Start")
+                    .frame(maxWidth: .infinity)
+            }
+
+            Toggle("Launch at Login", isOn: Binding(
+                get: { engine.launchAtLogin },
+                set: { engine.setLaunchAtLogin($0) }
+            ))
+
+            Divider()
+
+            Button("Quit") {
+                NSApplication.shared.terminate(nil)
+            }
         }
-        .padding(16)
-        .fixedSize()
+        .padding(12)
+        .frame(width: 220)
     }
 }
 
@@ -225,13 +279,14 @@ struct ContentView: View {
 struct AudioKeepAliveApp: App {
     // Create the engine ONCE here. It lives as long as the app is running.
     @StateObject var engine = AudioEngine()
-    
+
     var body: some Scene {
-        WindowGroup("Keep Mac Audio Alive") { // Added Window Title
+        MenuBarExtra {
             ContentView()
                 .environmentObject(engine) // Pass it down
+        } label: {
+            Image(systemName: engine.isRunning ? "waveform.circle.fill" : "waveform.circle")
         }
-        // Removed .windowStyle(.hiddenTitleBar) so the title is visible
-        .windowResizability(.contentSize)
+        .menuBarExtraStyle(.window)
     }
 }
