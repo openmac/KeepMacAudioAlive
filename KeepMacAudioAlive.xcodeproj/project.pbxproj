@@ -6,9 +6,25 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B170AA002F02000000A88003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B170AA002F02000000A88002 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		414EFD4B2EF603B300A6032D /* KeepMacAudioAlive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeepMacAudioAlive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B170AA002F02000000A88001 /* KeepAudioAliveiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeepAudioAliveiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B170AA002F02000000A88002 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = KeepMacAudioAlive/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B170AA002F02000000A88005 /* Exceptions for "KeepAudioAliveiOS" folder in "KeepAudioAliveiOS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B170AA002F02000000A88007 /* KeepAudioAliveiOS */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		414EFD4D2EF603B300A6032D /* KeepMacAudioAlive */ = {
@@ -16,10 +32,25 @@
 			path = KeepMacAudioAlive;
 			sourceTree = "<group>";
 		};
+		B170AA002F02000000A88004 /* KeepAudioAliveiOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B170AA002F02000000A88005 /* Exceptions for "KeepAudioAliveiOS" folder in "KeepAudioAliveiOS" target */,
+			);
+			path = KeepAudioAliveiOS;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		414EFD482EF603B300A6032D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B170AA002F02000000A88006 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				414EFD4D2EF603B300A6032D /* KeepMacAudioAlive */,
+				B170AA002F02000000A88004 /* KeepAudioAliveiOS */,
 				414EFD4C2EF603B300A6032D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				414EFD4B2EF603B300A6032D /* KeepMacAudioAlive.app */,
+				B170AA002F02000000A88001 /* KeepAudioAliveiOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,6 +101,26 @@
 			);
 			productName = KeepAudioAlive;
 			productReference = 414EFD4B2EF603B300A6032D /* KeepMacAudioAlive.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B170AA002F02000000A88007 /* KeepAudioAliveiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B170AA002F02000000A8800C /* Build configuration list for PBXNativeTarget "KeepAudioAliveiOS" */;
+			buildPhases = (
+				B170AA002F02000000A88009 /* Sources */,
+				B170AA002F02000000A88006 /* Frameworks */,
+				B170AA002F02000000A88008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B170AA002F02000000A88004 /* KeepAudioAliveiOS */,
+			);
+			name = KeepAudioAliveiOS;
+			productName = KeepAudioAliveiOS;
+			productReference = B170AA002F02000000A88001 /* KeepAudioAliveiOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -100,6 +153,7 @@
 			projectRoot = "";
 			targets = (
 				414EFD4A2EF603B300A6032D /* KeepMacAudioAlive */,
+				B170AA002F02000000A88007 /* KeepAudioAliveiOS */,
 			);
 		};
 /* End PBXProject section */
@@ -112,10 +166,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B170AA002F02000000A88008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B170AA002F02000000A88003 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		414EFD472EF603B300A6032D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B170AA002F02000000A88009 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -311,6 +380,60 @@
 			};
 			name = Release;
 		};
+		B170AA002F02000000A8800A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KeepAudioAliveiOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Keep Audio Alive";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.openmac.KeepAudioAlive.mobile;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B170AA002F02000000A8800B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KeepAudioAliveiOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Keep Audio Alive";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.openmac.KeepAudioAlive.mobile;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -328,6 +451,15 @@
 			buildConfigurations = (
 				414EFD572EF603B400A6032D /* Debug */,
 				414EFD582EF603B400A6032D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B170AA002F02000000A8800C /* Build configuration list for PBXNativeTarget "KeepAudioAliveiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B170AA002F02000000A8800A /* Debug */,
+				B170AA002F02000000A8800B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
